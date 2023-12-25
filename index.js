@@ -146,10 +146,22 @@ async function run() {
             const result = await menuCollection.insertOne(product)
             res.send(result)
         })
+        app.delete('/menu/:id', async(req, res)=>{
+            const id = req.params.id;
+            const query = {_id: new ObjectId(id)}
+            const result = await menuCollection.deleteOne(query)
+            res.send(result)
+        })
 
         app.get('/review', async(req, res)=>{
-            const cursor = reviewCollection.find()
+            const cursor = reviewCollection.find().sort({ date: -1 })
             const result = await cursor.toArray()
+            res.send(result)
+        })
+        app.post('/review', async(req, res)=>{
+            const content = req.body;
+            console.log(content);
+            const result = await reviewCollection.insertOne(content)
             res.send(result)
         })
 
